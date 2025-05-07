@@ -4,7 +4,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/App.js",
+    "start": "node src/App.js"
   },
   "author": "mariano ferreyra",
   "license": "ISC",
@@ -12,7 +13,6 @@
   "dependencies": {
     "cloudinary": "^2.6.1",
     "cors": "^2.8.5",
-    "dot-env": "^0.0.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "firebase-admin": "^13.3.0",
