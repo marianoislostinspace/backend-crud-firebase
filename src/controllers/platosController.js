@@ -6,30 +6,51 @@ const { uploadImage } = require('../uploadController')
 //OBTENER TODOS LOS PLATOS
 const obtenerPlatos = async (req, res) => {
     try {
-        // Obtener todas las categorías
         const categoriasSnapshot = await db.collection('categorias').get();
 
         if (categoriasSnapshot.empty) {
             return res.status(404).json({ error: 'No hay categorías en la base de datos' });
         }
-        // Obtener los platos de cada categoría
+
         let platos = [];
+
         for (const categoriaDoc of categoriasSnapshot.docs) {
+            const categoriaId = categoriaDoc.id;
             const categoriaRef = categoriaDoc.ref;
             const platosSnapshot = await categoriaRef.collection('platos').get();
 
-            if (!platosSnapshot.empty) {
-                platos = [
-                    ...platos,
-                    ...platosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data(), categoriaId: categoriaDoc.id })),
-                ];
+            for (const platoDoc of platosSnapshot.docs) {
+                const platoData = platoDoc.data();
+                const platoId = platoDoc.id;
+
+                // 🔽 Obtener las opciones (toppings)
+                const opcionesSnapshot = await categoriaRef
+                    .collection('platos')
+                    .doc(platoId)
+                    .collection('opciones')
+                    .get();
+
+                const opciones = opcionesSnapshot.docs.map(opcionDoc => ({
+                    id: opcionDoc.id,
+                    ...opcionDoc.data()
+                }));
+
+                platos.push({
+                    id: platoId,
+                    categoriaId,
+                    ...platoData,
+                    opciones // 🔽 ahora el plato incluye sus toppings
+                });
             }
         }
-        res.json(platos);  // Devolver todos los platos
+
+        res.json(platos);
     } catch (err) {
+        console.error(err);
         res.status(500).json({ err: 'Error al obtener los platos' });
     }
 };
+
 
 
 //AGREGAR UN NUEVO PLATO
