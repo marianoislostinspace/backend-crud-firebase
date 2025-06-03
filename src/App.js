@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const app = express();
 
-const categoriasRoutes = require('./routes/platosRoutes');
+const categoriasRoutes = require('./routes/categoriasRoutes');
 const platosRoutes = require('./routes/platosRoutes');
 const opcionesRoutes = require('./routes/platosOpciones');
 
