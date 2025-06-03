@@ -1,15 +1,18 @@
-const express = require('express')
-const router = express.Router()
-const{obtenerPedidos, agregarPedido, EliminarPedido} = require('../controllers/pedidosController')
+const express = require('express');
+const pedidosController = require('../controllers/pedidosController');
 
+module.exports = function (io) {
+    const router = express.Router();
+    const { obtenerPedidos, agregarPedido, EliminarPedido } = pedidosController(io);
 
-//ruta para obtener los pedidos
-router.get('/', obtenerPedidos)
+    //ruta para obtener los pedidos
+    router.get('/', obtenerPedidos);
 
-//ruta para agregar pedidos
-router.post('/', agregarPedido)
+    //ruta para agregar pedidos
+    router.post('/', agregarPedido);
 
-//ruta para eliminar un pedido
-router.delete('/:pedidoId', EliminarPedido);
+    //ruta para eliminar un pedido
+    router.delete('/:pedidoId', EliminarPedido);
 
-module.exports = router;
+    return router;
+};
