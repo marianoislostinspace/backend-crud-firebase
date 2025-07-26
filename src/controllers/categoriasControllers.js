@@ -1,11 +1,13 @@
 const { db } = require('../config/Firebase');
+const { uploadImage } = require('../uploadController');
 const { actualizarPlato } = require('./platosController');
+
 
 //OBTENER CATEGORIAS
 const obtenerCategorias = async (req, res) => {
   try {
     const snapshot = await db.collection('categorias').get();
-    
+
     const categorias = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
@@ -34,6 +36,12 @@ const crearCategoria = async (req, res) => {
       creadaEn: new Date()
     };
 
+    //si hay imagen subirla a cloudinary
+    if (req.file) {
+      const imgUrl = await uploadImage(req)
+      nuevaCategoria.imagen = imgUrl
+    }
+
     const categoriaRef = await db.collection('categorias').add(nuevaCategoria);
 
     res.status(201).json({
@@ -56,9 +64,17 @@ const editarCategoria = async (req, res) => {
   try {
     const categoriaRef = db.collection('categorias').doc(categoriaId);
     const doc = await categoriaRef.get();
+
     if (!doc.exists) {
       return res.status(404).json({ error: 'Categoría no encontrada' });
     }
+
+    // Subir imagen si se proporciona
+    if (req.file) {
+      const imageUrl = await uploadImage(req);
+      datosActualizados.imagen = imageUrl;
+    }
+
     await categoriaRef.update(datosActualizados);
     res.json({ mensaje: 'Categoría actualizada correctamente' });
   } catch (error) {
@@ -92,4 +108,4 @@ const eliminarCategoria = async (req, res) => {
 
 
 
-module.exports = {obtenerCategorias, crearCategoria, editarCategoria, eliminarCategoria };
+module.exports = { obtenerCategorias, crearCategoria, editarCategoria, eliminarCategoria };

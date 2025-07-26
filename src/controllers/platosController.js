@@ -12,6 +12,7 @@ const obtenerPlatos = async (req, res) => {
             return res.status(404).json({ error: 'No hay categorías en la base de datos' });
         }
 
+
         let platos = [];
 
         for (const categoriaDoc of categoriasSnapshot.docs) {
