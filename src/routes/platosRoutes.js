@@ -6,7 +6,7 @@ const { obtenerPlatos, agregarPlato, actualizarPlato, eliminarPlato } = require(
 const authMiddleware = require('../middlewares/authMiddleware')
 
 
-router.use(authMiddleware)
+// router.use(authMiddleware)
 
 
 // GET /platos/

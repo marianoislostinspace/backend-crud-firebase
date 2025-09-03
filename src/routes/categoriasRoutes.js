@@ -5,7 +5,7 @@ const multer = require('multer');
 const authMiddleware = require('../middlewares/authMiddleware');
 const upload = multer(); // almacenamiento en memoria
 
-router.use(authMiddleware)
+// router.use(authMiddleware)
 
 
 //ruta para obtener una categoria

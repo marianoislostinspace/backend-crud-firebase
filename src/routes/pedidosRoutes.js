@@ -9,7 +9,7 @@ module.exports = function (io) {
     const router = express.Router();
     const { obtenerPedidos, agregarPedido, EliminarPedido } = pedidosController(io);
     
-    router.use(authMiddleware)
+    // router.use(authMiddleware)
     //ruta para obtener los pedidos
     router.get('/', obtenerPedidos);
 

@@ -4,7 +4,7 @@ const { agregarOpcion, obtenerOpciones, eliminarOpcion} = require('../controller
 const authMiddleware = require('../middlewares/authMiddleware');
 
 
-router.use(authMiddleware)
+// router.use(authMiddleware)
 
 
 // GET - obtener todas las opciones de un plato específico
