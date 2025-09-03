@@ -1,4 +1,4 @@
-const allowedUsers = ["www.mf044491@gmail.com"]
+const allowedUsers = ["mf044491@gmail.com"]
 
 
 const admin = require('firebase-admin')
