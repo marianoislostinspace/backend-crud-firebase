@@ -4,12 +4,12 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 module.exports = function (io) {
 
-    router.use(authMiddleware)
-
-
+    
+    
     const router = express.Router();
     const { obtenerPedidos, agregarPedido, EliminarPedido } = pedidosController(io);
-
+    
+    router.use(authMiddleware)
     //ruta para obtener los pedidos
     router.get('/', obtenerPedidos);
 
