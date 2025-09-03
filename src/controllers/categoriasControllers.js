@@ -1,6 +1,5 @@
 const { db } = require('../config/Firebase');
 const { uploadImage } = require('../uploadController');
-const { actualizarPlato } = require('./platosController');
 
 
 //OBTENER CATEGORIAS

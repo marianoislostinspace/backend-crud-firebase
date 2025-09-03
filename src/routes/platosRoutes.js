@@ -3,6 +3,10 @@ const router = express.Router();
 const multer = require('multer');
 const upload = multer(); // almacenamiento en memoria
 const { obtenerPlatos, agregarPlato, actualizarPlato, eliminarPlato } = require('../controllers/platosController'); // Importar la función
+const authMiddleware = require('../middlewares/authMiddleware')
+
+
+router.use(authMiddleware)
 
 
 // GET /platos/
