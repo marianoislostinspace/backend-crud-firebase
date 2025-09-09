@@ -4,7 +4,7 @@ const { JWT_SECRET, JWT_EXPIRES } = require("../config/jwt.config");
 const USERNAME = "adolf hitman"
 const PASSWORD = "iHateNigger"
 
-export const login = (req, res) => {
+ const login = (req, res) => {
     const { username, password } = req.body
 
     if (username === USERNAME && password === PASSWORD) {
@@ -14,3 +14,5 @@ export const login = (req, res) => {
 
     return res.status(401).json({ message: "Credenciales ivalidas Chaval" });
 }
+
+module.exports = login
