@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const {obtenerCategorias, crearCategoria, editarCategoria, eliminarCategoria } = require('../controllers/categoriasControllers');
 const multer = require('multer');
-const authMiddleware = require('../middlewares/authMiddleware');
 const upload = multer(); // almacenamiento en memoria
+const authMiddleware = require("../middlewares/authMiddleware")
 
-// router.use(authMiddleware)
-
+//con esto protrege todas las rutas
+router.use(authMiddleware)
 
 //ruta para obtener una categoria
 router.get('/', obtenerCategorias);

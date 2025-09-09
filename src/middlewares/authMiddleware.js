@@ -1,26 +1,17 @@
-// const allowedUsers = ["www.mf044491@gmail.com"]
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config/jwt.config");
 
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-// const admin = require('firebase-admin')
+  if (!token) return res.status(401).json({ message: "No hay token" });
 
-// async function authMiddleware(req, res, next) {
-//     const authHeader = req.headers.authorization
-//     if (!authHeader) return res.status(401).json({ message: "No autorizado" })
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Token inválido" });
+    req.user = user;
+    next();
+  });
+};
 
-//     const token = authHeader.split(" ")[1]
-
-//     try {
-//         const decodedToken = await admin.auth().verifyIdToken(token)
-
-//         if(!allowedUsers.includes(decodedToken.email)){
-//             return res.status(403).json({message:"Usuario no permitido"})
-//         }
-
-//         req.user = decodedToken
-//         next()
-//     } catch (error) {
-//         res.status(401).json({message: "Token invalido"})
-//     }
-// }
-
-// module.exports = authMiddleware
+module.exports = authMiddleware;

@@ -9,6 +9,7 @@ const app = express();
 const categoriasRoutes = require('./routes/categoriasRoutes');
 const platosRoutes = require('./routes/platosRoutes');
 const opcionesRoutes = require('./routes/platosOpciones');
+const authRoutes = require("./routes/authRoutes")
 
 // Aquí importamos la función que recibe io y retorna el router
 const pedidosRoutes = require('./routes/pedidosRoutes');
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 // Rutas que no usan io
+app.use('/auth', authRoutes);
 app.use('/categorias', categoriasRoutes);
 app.use('/platos', platosRoutes);
 app.use('/opciones', opcionesRoutes);
@@ -27,7 +29,7 @@ const server = http.createServer(app);
 // Inicializar socket.io
 const io = new Server(server, {
   cors: {
-    origin: '*', // o la URL de tu front
+    origin: '*',
     methods: ['GET', 'POST'],
   }
 });
