@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 const { JWT_SECRET, JWT_EXPIRES } = require("../config/jwt.config");
 
 const USERNAME = "adolf hitman"
-const PASSWORD = "iHateNigger"
+const PASSWORD = "iHateNiggers"
 
  const login = (req, res) => {
     const { username, password } = req.body
