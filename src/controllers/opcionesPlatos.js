@@ -23,7 +23,7 @@ const agregarOpcion = async (req, res) => {
     }
 };
 
-// 🔹 Obtener todas las opciones de un plato
+// Obtener todas las opciones de un plato
 const obtenerOpciones = async (req, res) => {
     const { categoriaId, platoId } = req.params;
 
@@ -48,7 +48,7 @@ const obtenerOpciones = async (req, res) => {
 
 
 
-// 🔸 Eliminar una opción de un plato
+//  Eliminar una opción de un plato
 const eliminarOpcion = async (req, res) => {
     const { categoriaId, platoId, opcionId } = req.params;
 

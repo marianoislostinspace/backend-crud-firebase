@@ -43,7 +43,7 @@ const pedidosController = (io) => {
 
       const pedidoRef = await categoriaPedidoRef.collection('pedidos').add(nuevoPedido);
 
-      // 🔥 Emitimos evento al frontend
+      // Emitimos evento al frontend
       io.emit('nuevo-pedido', { id: pedidoRef.id, ...nuevoPedido });
 
       res.status(201).json({ message: 'Pedido creado con éxito', id: pedidoRef.id });

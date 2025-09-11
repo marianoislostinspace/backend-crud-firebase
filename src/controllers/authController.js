@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken")
 const { JWT_SECRET, JWT_EXPIRES } = require("../config/jwt.config");
+require('dotenv').config();
 
-const USERNAME = "adolf hitman"
-const PASSWORD = "iHateNiggers"
+const USERNAME = process.env.USERNAME
+const PASSWORD = process.env.PASSWORD
 
  const login = (req, res) => {
     const { username, password } = req.body

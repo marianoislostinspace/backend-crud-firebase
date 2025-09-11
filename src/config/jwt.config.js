@@ -1,4 +1,6 @@
+require('dotenv').config();
+
 module.exports = {
-  JWT_SECRET: process.env.JWT_SECRET || "clave-super-secreta",
+  JWT_SECRET: process.env.JWT_SECRET || process.env.JWBPASSWORD,
   JWT_EXPIRES: "2h"
 };
