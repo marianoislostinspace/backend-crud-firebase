@@ -33,7 +33,7 @@ app.use('/opciones', getPlatosClientRoutes);
 
 //Rutas Publicas sin seguridad
 app.use('/GetCategoriasClient', getCatClientRoutes);
-app.use('/GetPlatosClient', platosRoutes);
+app.use('/GetPlatosClient', getPlatosClientRoutes);
 
 // Crear servidor HTTP para socket.io
 const server = http.createServer(app);
