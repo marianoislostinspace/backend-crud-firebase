@@ -6,10 +6,18 @@ require('dotenv').config();
 
 const app = express();
 
+//RUTAS PROTEGIDAS
 const categoriasRoutes = require('./routes/categoriasRoutes');
 const platosRoutes = require('./routes/platosRoutes');
 const opcionesRoutes = require('./routes/platosOpciones');
 const authRoutes = require("./routes/authRoutes")
+
+//RUTAS PUBLICAS (CLIENTE)
+const getCatClientRoutes = require('./routes/getCatClientRoutes');
+const getPlatosClientRoutes = require('./routes/getPlatosClientRoutes');
+
+
+
 
 // Aquí importamos la función que recibe io y retorna el router
 const pedidosRoutes = require('./routes/pedidosRoutes');
@@ -21,7 +29,11 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/categorias', categoriasRoutes);
 app.use('/platos', platosRoutes);
-app.use('/opciones', opcionesRoutes);
+app.use('/opciones', getPlatosClientRoutes);
+
+//Rutas Publicas sin seguridad
+app.use('/GetCategoriasClient', getCatClientRoutes);
+app.use('/GetPlatosClient', platosRoutes);
 
 // Crear servidor HTTP para socket.io
 const server = http.createServer(app);
