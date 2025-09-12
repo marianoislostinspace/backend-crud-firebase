@@ -1,5 +1,4 @@
-
-
+const { db } = require('../config/Firebase');
 
 
 const getPlatosClient = async (req, res) => {
@@ -22,7 +21,7 @@ const getPlatosClient = async (req, res) => {
                 const platoData = platoDoc.data();
                 const platoId = platoDoc.id;
 
-                // 🔽 Obtener las opciones (toppings)
+                
                 const opcionesSnapshot = await categoriaRef
                     .collection('platos')
                     .doc(platoId)
