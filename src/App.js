@@ -21,6 +21,8 @@ const getPlatosClientRoutes = require('./routes/getPlatosClientRoutes');
 
 // Aquí importamos la función que recibe io y retorna el router
 const pedidosRoutes = require('./routes/pedidosRoutes');
+const pedidosClientRoutes = require('./routes/pedidosClientRoutes');
+
 
 app.use(cors());
 app.use(express.json());
@@ -48,6 +50,7 @@ const io = new Server(server, {
 
 // Montar rutas que necesitan io
 app.use('/pedidos', pedidosRoutes(io));
+app.use('/pedidosClient', pedidosClientRoutes(io));
 
 // Escuchar conexiones socket.io
 io.on('connection', (socket) => {
