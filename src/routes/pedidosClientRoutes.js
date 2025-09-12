@@ -2,14 +2,10 @@ const express = require('express');
 const agregarPedidoClient = require('../controllers/postPedidosCLient');
 
 module.exports = function (io) {
+  const router = express.Router();
 
-    
-    
-    const router = express.Router();
-    const { agregarPedido} = pedidosController(io);
-    
-    //ruta para agregar pedidos
-    router.post('/', agregarPedido);
+  // Le pasás io cuando armás la ruta
+  router.post('/', agregarPedidoClient(io));
 
-    return router;
+  return router;
 };
