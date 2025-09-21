@@ -1,6 +1,5 @@
 const express = require('express');
 const pedidosController = require('../controllers/pedidosController');
-const authMiddleware = require("../middlewares/authMiddleware")
 
 module.exports = function (io) {
 
@@ -9,7 +8,7 @@ module.exports = function (io) {
     const router = express.Router();
     const { obtenerPedidos, agregarPedido, EliminarPedido } = pedidosController(io);
     
-    router.use(authMiddleware)
+    router.use()
     //ruta para obtener los pedidos
     router.get('/', obtenerPedidos);
 
