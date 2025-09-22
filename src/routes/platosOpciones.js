@@ -11,9 +11,9 @@ router.use(authMiddleware)
 router.get('/categorias/:categoriaId/platos/:platoId/opciones', obtenerOpciones);
 
 // POST - agregar una nueva opción a un plato
-router.post('/:categoriaId/:platoId', agregarOpcion);
+router.post('/categorias/:categoriaId/platos/:platoId/opciones', agregarOpcion);
 
 // DELETE - eliminar una opción
-router.delete('/:categoriaId/:platoId/:opcionId', eliminarOpcion);
+router.delete('/categorias/:categoriaId/platos/:platoId/opciones/:opcionId', eliminarOpcion);
 
 module.exports = router;
