@@ -11,7 +11,7 @@ const { agregarOpcion, obtenerOpciones, eliminarOpcion} = require('../controller
 router.get('/categorias/:categoriaId/platos/:platoId/opciones', obtenerOpciones);
 
 // POST - agregar una nueva opción a un plato
-router.post('/categorias/:categoriaId/platos/:platoId/opciones', agregarOpcion);
+router.post('/:categoriaId/:platoId', agregarOpcion);
 
 // DELETE - eliminar una opción
 router.delete('/categorias/:categoriaId/platos/:platoId/opciones/:opcionId', eliminarOpcion);
