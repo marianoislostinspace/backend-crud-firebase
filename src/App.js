@@ -31,7 +31,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/categorias', categoriasRoutes);
 app.use('/platos', platosRoutes);
-app.use('/opciones', getPlatosClientRoutes);
+app.use('/opciones', opcionesRoutes);
 
 //Rutas Publicas sin seguridad
 app.use('/GetCategoriasClient', getCatClientRoutes);

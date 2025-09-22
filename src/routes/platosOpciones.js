@@ -14,6 +14,6 @@ router.get('/categorias/:categoriaId/platos/:platoId/opciones', obtenerOpciones)
 router.post('/:categoriaId/:platoId', agregarOpcion);
 
 // DELETE - eliminar una opción
-router.delete('/categorias/:categoriaId/platos/:platoId/opciones/:opcionId', eliminarOpcion);
+router.delete('/:categoriaId/:platoId/:opcionId', eliminarOpcion);
 
 module.exports = router;
