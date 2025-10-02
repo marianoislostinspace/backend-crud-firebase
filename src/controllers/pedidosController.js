@@ -1,4 +1,5 @@
 const { db } = require('../config/Firebase');
+const { uploadImage } = require('../uploadController');
 
 const pedidosController = (io) => {
   // Obtener pedidos
@@ -52,6 +53,44 @@ const pedidosController = (io) => {
     }
   };
 
+
+  // Actualizar un pedido 
+  const editPedido = async (req, res) => {
+    const idPedidoCategory = 'KNMBYusxkf3fJjSUWZVB';
+    const { pedidoId } = req.params;
+    const datosActualizados = req.body
+
+    try {
+      const pedidoRef = db
+        .collection('pedidosCat')
+        .doc(idPedidoCategory)
+        .collection('pedidos')
+        .doc(pedidoId);
+
+      const doc = await pedidoRef.get();
+      if (!doc.exists) {
+        return res.status(404).json({ error: "Pedido no encontrado" });
+      }
+      if (req.file) {
+        const imageUrl = await uploadImage(req);
+        datosActualizados.imagen = imageUrl;
+      }
+
+      await pedidoRef.update(datosActualizados);
+      res.json({ message: "Pedido actualizado correctamente" });
+    } catch (error) {
+      console.error('Error al actualizar el pedido:', error);
+      res.status(500).json({ message: "Error al actualizar el pedido" });
+    }
+  };
+
+
+
+
+
+
+
+
   // Eliminar pedido
   const EliminarPedido = async (req, res) => {
     const { pedidoId } = req.params;
@@ -70,7 +109,7 @@ const pedidosController = (io) => {
     }
   };
 
-  return { obtenerPedidos, agregarPedido, EliminarPedido };
+  return { obtenerPedidos, agregarPedido, editPedido, EliminarPedido };
 };
 
 module.exports = pedidosController;
