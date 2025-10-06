@@ -11,6 +11,7 @@ const categoriasRoutes = require('./routes/categoriasRoutes');
 const platosRoutes = require('./routes/platosRoutes');
 const opcionesRoutes = require('./routes/platosOpciones');
 const authRoutes = require("./routes/authRoutes")
+const configRoutes = require("./routes/configRoutes")
 
 //RUTAS PUBLICAS (CLIENTE)
 const getCatClientRoutes = require('./routes/getCatClientRoutes');
@@ -19,7 +20,7 @@ const getPlatosClientRoutes = require('./routes/getPlatosClientRoutes');
 
 
 
-// Aquí importamos la función que recibe io y retorna el router
+// aca importamos la función que recibe io y retorna el router
 const pedidosRoutes = require('./routes/pedidosRoutes');
 const pedidosClientRoutes = require('./routes/pedidosClientRoutes');
 
@@ -32,6 +33,7 @@ app.use('/auth', authRoutes);
 app.use('/categorias', categoriasRoutes);
 app.use('/platos', platosRoutes);
 app.use('/opciones', opcionesRoutes);
+app.use('/config', configRoutes);
 
 //Rutas Publicas sin seguridad
 app.use('/GetCategoriasClient', getCatClientRoutes);
