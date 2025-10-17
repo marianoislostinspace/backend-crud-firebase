@@ -38,8 +38,9 @@ const pedidosController = (io) => {
 
     try {
       const categoriaPedidoRef = db.collection('pedidosCat').doc(idPedidoCategory);
-      const counterRef = categoriaPedidoRef.collection("_meta").doc("counter");
+      const counterRef = categoriaPedidoRef.collection("_meta").doc("counter")
 
+      // evitar Colisiones
       const nextId = await db.runTransaction(async (t) => {
         const counterDoc = await t.get(counterRef);
         let idNum = 1;
@@ -51,8 +52,7 @@ const pedidosController = (io) => {
           t.update(counterRef, { lastId: idNum });
         }
 
-        const pedidoRef = categoriaPedidoRef.collection("pedidos").doc(idNum.toString());
-
+        const pedidoRef = categoriaPedidoRef.collection("pedidos").doc();
         t.set(pedidoRef, {
           ...nuevoPedido,
           id: idNum,
@@ -62,18 +62,14 @@ const pedidosController = (io) => {
         return idNum;
       });
 
-      io.emit('nuevo-pedido', { ...nuevoPedido, id: nextId });
+      // Emitimos evento al frontend
+      io.emit('nuevo-pedido', { id: pedidoRef.id, ...nuevoPedido, idNumerico: nextId });
 
-      res.status(201).json({
-        message: 'Pedido creado con éxito',
-        id: nextId,
-      });
+      res.status(201).json({ message: 'Pedido creado con éxito', id: pedidoRef.id, idNumerico: nextId });
     } catch (error) {
-      console.error("Error al crear pedido:", error);
       res.status(500).json({ message: 'Error al crear el pedido' });
     }
   };
-
 
 
   // Actualizar un pedido 
@@ -115,14 +111,14 @@ const pedidosController = (io) => {
 
   // Eliminar pedido
   const EliminarPedido = async (req, res) => {
-    const { id } = req.params;
+    const { pedidoId } = req.params;
 
     try {
       await db
         .collection('pedidosCat')
         .doc('KNMBYusxkf3fJjSUWZVB')
         .collection('pedidos')
-        .doc(id)
+        .doc(pedidoId)
         .delete();
 
       res.status(200).json({ message: 'Pedido eliminado correctamente' });
