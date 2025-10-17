@@ -52,7 +52,7 @@ const pedidosController = (io) => {
           t.update(counterRef, { lastId: idNum });
         }
 
-        const pedidoRef = categoriaPedidoRef.collection("pedidos").doc();
+        const pedidoRef = categoriaPedidoRef.collection("pedidos").doc(idNum.toString());
         t.set(pedidoRef, {
           ...nuevoPedido,
           id: idNum,
