@@ -111,14 +111,14 @@ const pedidosController = (io) => {
 
   // Eliminar pedido
   const EliminarPedido = async (req, res) => {
-    const { pedidoId } = req.params;
+    const { id } = req.params;
 
     try {
       await db
         .collection('pedidosCat')
         .doc('KNMBYusxkf3fJjSUWZVB')
         .collection('pedidos')
-        .doc(pedidoId)
+        .doc(id)
         .delete();
 
       res.status(200).json({ message: 'Pedido eliminado correctamente' });
