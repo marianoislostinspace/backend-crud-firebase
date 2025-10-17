@@ -38,9 +38,8 @@ const pedidosController = (io) => {
 
     try {
       const categoriaPedidoRef = db.collection('pedidosCat').doc(idPedidoCategory);
-      const counterRef = categoriaPedidoRef.collection("_meta").doc("counter")
+      const counterRef = categoriaPedidoRef.collection("_meta").doc("counter");
 
-      // evitar Colisiones
       const nextId = await db.runTransaction(async (t) => {
         const counterDoc = await t.get(counterRef);
         let idNum = 1;
@@ -52,7 +51,8 @@ const pedidosController = (io) => {
           t.update(counterRef, { lastId: idNum });
         }
 
-        const pedidoRef = categoriaPedidoRef.collection("pedidos").doc();
+        const pedidoRef = categoriaPedidoRef.collection("pedidos").doc(idNum.toString());
+
         t.set(pedidoRef, {
           ...nuevoPedido,
           id: idNum,
@@ -62,14 +62,18 @@ const pedidosController = (io) => {
         return idNum;
       });
 
-      // Emitimos evento al frontend
-      io.emit('nuevo-pedido', { id: pedidoRef.id, ...nuevoPedido, idNumerico: nextId });
+      io.emit('nuevo-pedido', { ...nuevoPedido, id: nextId });
 
-      res.status(201).json({ message: 'Pedido creado con éxito', id: pedidoRef.id, idNumerico: nextId });
+      res.status(201).json({
+        message: 'Pedido creado con éxito',
+        id: nextId,
+      });
     } catch (error) {
+      console.error("Error al crear pedido:", error);
       res.status(500).json({ message: 'Error al crear el pedido' });
     }
   };
+
 
 
   // Actualizar un pedido 
