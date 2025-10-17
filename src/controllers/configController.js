@@ -7,7 +7,7 @@ const obtenerConfig = async (req, res) => {
         const configSnapshot = await db.collection('config').get();
 
         if (configSnapshot.empty) {
-            return res.status(404).json({ message: 'No hay datos de configuración' });
+            return res.status(404).json({ error: 'No hay datos de configuración' });
         }
 
         let configData = [];
@@ -49,10 +49,10 @@ const agregarConfig = async (req, res) => {
 
         const configdataRef = await configRef.collection("configData").add(nuevaConfig)
 
-        res.status(201).json({ message: 'configuracion creada con éxito', id: configdataRef.id });
+        res.status(201).json({ error: 'configuracion creada con éxito', id: configdataRef.id });
 
     } catch (error) {
-        res.status(500).json({ message: 'Error al crear la Configuracion' });
+        res.status(500).json({ error: 'Error al crear la Configuracion' });
     }
 };
 
@@ -77,10 +77,10 @@ const editConfig = async (req, res) => {
 
 
         await configDataRef.update(updatedconfig);
-        res.json({ message: "Configuracion actualizada correctamente" });
+        res.json({ error: "Configuracion actualizada correctamente" });
     } catch (error) {
         console.error('Error al actualizar la configuracion:', error);
-        res.status(500).json({ message: "Error al actualizar la configuracion" });
+        res.status(500).json({ error: "Error al actualizar la configuracion" });
     }
 };
 
@@ -98,9 +98,9 @@ const eliminarConfig = async (req, res) => {
             .collection('configData')
             .doc(configId).delete()
 
-        res.status(200).json({ message: 'configuracion eliminada correctamente' });
+        res.status(200).json({ error: 'configuracion eliminada correctamente' });
     } catch (error) {
-        res.status(500).json({ message: 'Error al eliminar la configuracion' });
+        res.status(500).json({ error: 'Error al eliminar la configuracion' });
     }
 };
 

@@ -76,7 +76,7 @@ const agregarPlato = async (req, res) => {
         const platoRef = await categoriaRef.collection('platos').add(nuevoPlato);
         res.status(201).json({ mensaje: 'Plato Agregado', id: platoRef.id, nuevoPlato });
     } catch (error) {
-        res.status(500).json({ message: 'Error al agregar el plato' });
+        res.status(500).json({ error: 'Error al agregar el plato' });
     }
 };
 
@@ -105,7 +105,7 @@ const actualizarPlato = async (req, res) => {
         }
 
         await platoRef.update(datosActualizados);
-        res.json({ message: 'Plato actualizado correctamente' });
+        res.json({ error: 'Plato actualizado correctamente' });
 
     } catch (error) {
         console.error(error);
@@ -127,7 +127,7 @@ const eliminarPlato = async (req, res) => {
         }
 
         await platoRef.delete()
-        res.json({ message: 'Plato eliminado correctamente' })
+        res.json({ error: 'Plato eliminado correctamente' })
     } catch (error) {
         res.status(500).json({ error: 'Error al eliminar el plato' })
     }

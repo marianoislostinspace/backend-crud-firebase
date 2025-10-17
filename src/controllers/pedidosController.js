@@ -7,7 +7,7 @@ const pedidosController = (io) => {
     try {
       const categoriaPedidosSnapshot = await db.collection('pedidosCat').get();
       if (categoriaPedidosSnapshot.empty) {
-        return res.status(404).json({ message: 'No hay Pedidos en la base de datos' });
+        return res.status(404).json({ error: 'No hay Pedidos en la base de datos' });
       }
 
       let pedidos = [];
@@ -65,9 +65,9 @@ const pedidosController = (io) => {
       // Emitimos evento al frontend
       io.emit('nuevo-pedido', { id: pedidoRef.id, ...nuevoPedido, idNumerico: nextId });
 
-      res.status(201).json({ message: 'Pedido creado con éxito', id: pedidoRef.id, idNumerico: nextId });
+      res.status(201).json({ error: 'Pedido creado con éxito', id: pedidoRef.id, idNumerico: nextId });
     } catch (error) {
-      res.status(500).json({ message: 'Error al crear el pedido' });
+      res.status(500).json({ error: 'Error al crear el pedido' });
     }
   };
 
@@ -95,10 +95,10 @@ const pedidosController = (io) => {
       }
 
       await pedidoRef.update(datosActualizados);
-      res.json({ message: "Pedido actualizado correctamente" });
+      res.json({ error: "Pedido actualizado correctamente" });
     } catch (error) {
       console.error('Error al actualizar el pedido:', error);
-      res.status(500).json({ message: "Error al actualizar el pedido" });
+      res.status(500).json({ error: "Error al actualizar el pedido" });
     }
   };
 
@@ -121,9 +121,9 @@ const pedidosController = (io) => {
         .doc(pedidoId)
         .delete();
 
-      res.status(200).json({ message: 'Pedido eliminado correctamente' });
+      res.status(200).json({ error: 'Pedido eliminado correctamente' });
     } catch (error) {
-      res.status(500).json({ message: 'Error al eliminar el pedido' });
+      res.status(500).json({ error: 'Error al eliminar el pedido' });
     }
   };
 

@@ -10,7 +10,7 @@ module.exports = (io) => {
       const doc = await categoriaPedidoRef.get();
 
       if (!doc.exists) {
-        return res.status(404).json({ message: 'Categoria de pedidos no encontrada' });
+        return res.status(404).json({ error: 'Categoria de pedidos no encontrada' });
       }
 
       const pedidoRef = await categoriaPedidoRef.collection('pedidos').add(nuevoPedido);
@@ -18,10 +18,10 @@ module.exports = (io) => {
       // Emitimos evento al frontend usando io
       io.emit('nuevo-pedido', { id: pedidoRef.id, ...nuevoPedido });
 
-      res.status(201).json({ message: 'Pedido creado con éxito', id: pedidoRef.id });
+      res.status(201).json({ error: 'Pedido creado con éxito', id: pedidoRef.id });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Error al crear el pedido' });
+      res.status(500).json({ error: 'Error al crear el pedido' });
     }
   };
 };

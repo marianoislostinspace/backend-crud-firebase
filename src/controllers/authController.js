@@ -18,7 +18,7 @@ const login = (req, res) => {
     )
 
     if (!match) {
-        return res.status(401).json({ message: "Credenciales ivalidas Chaval" });
+        return res.status(401).json({ error: "Credenciales ivalidas Chaval" });
 
     }
 
