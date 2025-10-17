@@ -29,6 +29,8 @@ const pedidosController = (io) => {
     }
   };
 
+
+
   // Crear pedido
   const agregarPedido = async (req, res) => {
     const idPedidoCategory = 'KNMBYusxkf3fJjSUWZVB';

@@ -74,7 +74,7 @@ const agregarPlato = async (req, res) => {
         }
 
         const platoRef = await categoriaRef.collection('platos').add(nuevoPlato);
-        res.status(201).json({ mensaje: 'Plato Agregado', id: platoRef.id });
+        res.status(201).json({ mensaje: 'Plato Agregado', id: platoRef.id, nuevoPlato });
     } catch (error) {
         res.status(500).json({ message: 'Error al agregar el plato' });
     }
