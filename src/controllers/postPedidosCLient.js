@@ -13,7 +13,10 @@ module.exports = (io) => {
         return res.status(404).json({ error: 'Categoria de pedidos no encontrada' });
       }
 
-      const pedidoRef = await categoriaPedidoRef.collection('pedidos').add(nuevoPedido);
+      const pedidoRef = await categoriaPedidoRef.collection('pedidos').add({
+        ...nuevoPedido,
+        estaArchivado: false,
+      });
 
       // Emitimos evento al frontend usando io
       io.emit('nuevo-pedido', { id: pedidoRef.id, ...nuevoPedido });
