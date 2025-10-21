@@ -55,6 +55,7 @@ const pedidosController = (io) => {
         const pedidoRef = categoriaPedidoRef.collection("pedidos").doc(idNum.toString());
         t.set(pedidoRef, {
           ...nuevoPedido,
+          estaArchivado: false,
           id: idNum,
           createdAt: new Date(),
         });
