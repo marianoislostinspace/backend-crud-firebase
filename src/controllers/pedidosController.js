@@ -69,6 +69,7 @@ const pedidosController = (io) => {
 
       res.status(201).json({ error: 'Pedido creado con éxito', id: pedidoRef.id, idNumerico: nextId });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ error: 'Error al crear el pedido' });
     }
   };
