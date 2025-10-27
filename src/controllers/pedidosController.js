@@ -29,6 +29,50 @@ const pedidosController = (io) => {
     }
   };
 
+  // OBTENER 20 PEDIDOS
+
+  const obtenerPedidosCantidad = async (req, res) => {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 20;
+      const skip = (page - 1) * limit;
+
+      const categoriaPedidosSnapshot = await db.collection('pedidosCat').get();
+      if (categoriaPedidosSnapshot.empty) {
+        return res.status(404).json({ error: 'No hay pedidos en la base de datos' });
+      }
+
+      let pedidos = [];
+
+      for (const pedidoDoc of categoriaPedidosSnapshot.docs) {
+        const pedidosSnapshot = await pedidoDoc.ref.collection('pedidos').get();
+        pedidos.push(
+          ...pedidosSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            categoriaId: pedidoDoc.id,
+          }))
+        );
+      }
+
+      pedidos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+      const pedidosPaginados = pedidos.slice(skip, skip + limit);
+
+      res.json({
+        pedidos: pedidosPaginados,
+        totalPedidos: pedidos.length,
+        totalPages: Math.ceil(pedidos.length / limit),
+        currentPage: page,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error al obtener los pedidos paginados' });
+    }
+  };
+
+
+
 
 
   // Crear pedido
@@ -64,7 +108,6 @@ const pedidosController = (io) => {
         return idNum;
       });
 
-      // Emitimos evento al frontend
       io.emit('nuevo-pedido', { id: pedidoRef.id, ...nuevoPedido, idNumerico: nextId });
 
       res.status(201).json({ error: 'Pedido creado con éxito', id: pedidoRef.id, idNumerico: nextId });
@@ -129,7 +172,7 @@ const pedidosController = (io) => {
     }
   };
 
-  return { obtenerPedidos, agregarPedido, editPedido, EliminarPedido };
+  return { obtenerPedidos, agregarPedido, editPedido, EliminarPedido, obtenerPedidosCantidad };
 };
 
 module.exports = pedidosController;
