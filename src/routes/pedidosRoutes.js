@@ -7,7 +7,7 @@ module.exports = function (io) {
 
 
     const router = express.Router();
-    const { obtenerPedidos, agregarPedido, editPedido, EliminarPedido, obtenerPedidosCantidad } = pedidosController(io);
+    const { obtenerPedidos, agregarPedido, editPedido, EliminarPedido, obtenerPedidosCantidad, obtenerPedidosNoarchivados } = pedidosController(io);
 
     // router.use(authMiddleware)
     //ruta para obtener los pedidos
@@ -15,6 +15,9 @@ module.exports = function (io) {
 
     // ruta para obtener de a 20 pedidos
     router.get('/cantidad', obtenerPedidosCantidad);
+
+    //rutas para obtener no archivados
+    router.get('/archivado', obtenerPedidosNoarchivados);
 
     //ruta para agregar pedidos
     router.post('/', agregarPedido);

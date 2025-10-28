@@ -29,6 +29,35 @@ const pedidosController = (io) => {
     }
   };
 
+
+  // OBTENER NO-ARCHIVADOS 
+  const obtenerPedidosNoarchivados = async (req, res) => {
+    try {
+      const categoriaPedidosSnapshot = await db.collection('pedidosCat').get();
+      if (categoriaPedidosSnapshot.empty) {
+        return res.status(404).json({ error: 'No hay Pedidos en la base de datos' });
+      }
+
+      let pedidos = [];
+      for (const pedidoDoc of categoriaPedidosSnapshot.docs) {
+        const pedidoCatRef = pedidoDoc.ref;
+        const pedidosSnapshot = await pedidoCatRef.collection('pedidos').where('estaArchivado', '==', false).get();
+
+        if (!pedidosSnapshot.empty) {
+          pedidos = [
+            ...pedidos,
+            ...pedidosSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data(), pedidoId: pedidoDoc.id })),
+          ];
+        }
+      }
+
+      res.json(pedidos);
+    } catch (err) {
+      res.status(500).json({ err: 'Error al obtener los pedidos' });
+    }
+  };
+
+
   // OBTENER 20 PEDIDOS
 
   const obtenerPedidosCantidad = async (req, res) => {
@@ -173,7 +202,7 @@ const pedidosController = (io) => {
     }
   };
 
-  return { obtenerPedidos, agregarPedido, editPedido, EliminarPedido, obtenerPedidosCantidad };
+  return { obtenerPedidos, agregarPedido, editPedido, EliminarPedido, obtenerPedidosCantidad, obtenerPedidosNoarchivados };
 };
 
 module.exports = pedidosController;
