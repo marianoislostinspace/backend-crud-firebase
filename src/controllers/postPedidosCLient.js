@@ -7,23 +7,36 @@ module.exports = (io) => {
 
     try {
       const categoriaPedidoRef = db.collection('pedidosCat').doc(idPedidoCategory);
-      const doc = await categoriaPedidoRef.get();
+      const counterRef = categoriaPedidoRef.collection("_meta").doc("counter");
 
-      if (!doc.exists) {
-        return res.status(404).json({ error: 'Categoria de pedidos no encontrada' });
-      }
+      const nextId = await db.runTransaction(async (t) => {
+        const counterDoc = await t.get(counterRef);
 
-      const pedidoRef = await categoriaPedidoRef.collection('pedidos').add({
-        ...nuevoPedido,
-        estaArchivado: false,
+        let idNum = 1;
+        if (counterDoc.exists) {
+          idNum = counterDoc.data().value + 1;
+          t.update(counterRef, { value: idNum });
+        } else {
+          t.set(counterRef, { value: idNum });
+        }
+
+        const pedidoRef = categoriaPedidoRef.collection("pedidos").doc(idNum.toString());
+        t.set(pedidoRef, {
+          ...nuevoPedido,
+          estaArchivado: false,
+          id: idNum,
+          createdAt: new Date(),
+        });
+
+        return idNum;
       });
 
-      // Emitimos evento al frontend usando io
-      io.emit('nuevo-pedido', { id: pedidoRef.id, ...nuevoPedido });
+      io.emit('nuevo-pedido', { idNumerico: nextId, ...nuevoPedido });
 
-      res.status(201).json({ error: 'Pedido creado con éxito', id: pedidoRef.id });
+      res.status(201).json({ mensaje: 'Pedido creado con éxito', id: nextId });
+
     } catch (error) {
-      console.error(error);
+      console.error('Error al crear el pedido:', error);
       res.status(500).json({ error: 'Error al crear el pedido' });
     }
   };
