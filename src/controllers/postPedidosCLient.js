@@ -13,11 +13,12 @@ module.exports = (io) => {
         const counterDoc = await t.get(counterRef);
 
         let idNum = 1;
-        if (counterDoc.exists) {
-          idNum = counterDoc.data().value + 1;
-          t.update(counterRef, { value: idNum });
+        if (!counterDoc.exists) {
+          t.set(counterRef, { lastId: 1 });
         } else {
-          t.set(counterRef, { value: idNum });
+          const lastId = counterDoc.data().lastId || 0; // evita NaN
+          idNum = lastId + 1;
+          t.update(counterRef, { lastId: idNum });
         }
 
         const pedidoRef = categoriaPedidoRef.collection("pedidos").doc(idNum.toString());
